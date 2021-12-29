@@ -12,7 +12,7 @@ public class ConsoleProgress implements Runnable {
         while (!Thread.currentThread().interrupted()) {
             try {
                for (String character : process) {
-                Thread.sleep(220);
+                Thread.sleep(221);
                     System.out.print("\r load: " + character);
                }
             } catch (InterruptedException e) {
