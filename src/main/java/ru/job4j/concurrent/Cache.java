@@ -4,17 +4,7 @@ public final class Cache {
     private static volatile Cache cache;
     private static final Object LOCK = new Object();
 
-    public synchronized static Cache instOf() {
-        Cache c = cache;
-        if (c == null) {
-            synchronized (LOCK) {
-                c = cache;
-                if (c == null) {
-                    c = new Cache();
-                    cache = c;
-                }
-            }
-        }
+    public static synchronized Cache instOf() {
         if (cache == null) {
             cache = new Cache();
         }
