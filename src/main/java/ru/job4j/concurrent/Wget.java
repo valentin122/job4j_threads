@@ -22,16 +22,17 @@ public class Wget implements Runnable {
             byte[] dataBuffer = new byte[speed];
             int bytesRead;
             Date startDate = new Date();
-            System.out.println("Start downloading: " + startDate.toString());
+            System.out.println("Start downloading: " + startDate);
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
-                long startTime = new Date().getTime();
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
-                long timeLimit = 1000 - (new Date().getTime() - startTime);
-                System.out.println("timeLimit: " + timeLimit);
-                Thread.sleep(timeLimit);
+                long timeSpend = (new Date().getTime() - startDate.getTime());
+                System.out.println("timeSpend: " + timeSpend);
+                if (timeSpend < speed) {
+                    System.out.println("sleeping: " + (speed - timeSpend));
+                    Thread.sleep(speed - timeSpend);
+                }
+                startDate = new Date();
             }
-            System.out.println("End downloading: " + new Date().toString());
-            System.out.println("Time expend: " + (new Date().getTime() - startDate.getTime()) + "ms");
         } catch (IOException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
@@ -40,8 +41,8 @@ public class Wget implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        String url = "https://raw.githubusercontent.com/peterarsentev/course_test/master/pom.xml";
-        int speed = 1024;
+        String url = args[0];
+        int speed = Integer.parseInt(args[1]);
         Thread wget = new Thread(new Wget(url, speed));
         wget.start();
         wget.join();
