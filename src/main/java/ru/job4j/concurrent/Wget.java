@@ -17,21 +17,25 @@ public class Wget implements Runnable {
 
     @Override
     public void run() {
+        String fileName = url.substring(url.lastIndexOf("/") + 1);
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream("pom_tmp.xml")) {
-            byte[] dataBuffer = new byte[speed];
+            FileOutputStream fileOutputStream = new FileOutputStream(fileName)) {
+            byte[] dataBuffer = new byte[1024];
             int bytesRead;
-            Date startDate = new Date();
-            System.out.println("Start downloading: " + startDate);
+            long bytesWrited = 0;
+            Date referencePointDate = new Date();
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
-                long timeSpend = (new Date().getTime() - startDate.getTime());
-                System.out.println("timeSpend: " + timeSpend);
-                if (timeSpend < speed) {
-                    System.out.println("sleeping: " + (speed - timeSpend));
-                    Thread.sleep(speed - timeSpend);
+                bytesWrited += 1024;
+                if (bytesWrited >= speed) {
+                    long deltaTime = new Date().getTime() - referencePointDate.getTime();
+                    if (deltaTime < 1000) {
+                        Thread.sleep(1000 - deltaTime);
+                        System.out.println("sleeping: " + (1000 - deltaTime));
+                    }
+                    referencePointDate = new Date();
+                    bytesWrited = 0;
                 }
-                startDate = new Date();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -40,7 +44,16 @@ public class Wget implements Runnable {
         }
     }
 
+    public static void validateParams(String[] args) {
+        if (args.length != 2) {
+            System.out.println("Illegal numbers of args. Please input url and speed.");
+            throw new IllegalArgumentException();
+
+        }
+    }
+
     public static void main(String[] args) throws InterruptedException {
+        validateParams(args);
         String url = args[0];
         int speed = Integer.parseInt(args[1]);
         Thread wget = new Thread(new Wget(url, speed));
