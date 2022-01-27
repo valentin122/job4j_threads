@@ -13,9 +13,9 @@ public class SaveFile {
         BufferedOutputStream bufferedOutputStream;
         try (OutputStream out = new FileOutputStream(file)) {
             bufferedOutputStream = new BufferedOutputStream(out);
-        }
-        for (int i = 0; i < content.length(); i += 1) {
-            bufferedOutputStream.write(content.charAt(i));
+            for (int i = 0; i < content.length(); i += 1) {
+                bufferedOutputStream.write(content.charAt(i));
+            }
         }
     }
 }
