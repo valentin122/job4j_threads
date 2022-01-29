@@ -15,12 +15,10 @@ public class ParseFile {
     }
 
     public String getContent(Predicate<Character> filter) throws IOException {
-        BufferedInputStream in;
         StringBuilder stringBuilder = new StringBuilder();
         try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(file))) {
-            in = inputStream;
             int data;
-            while ((data = in.read()) > 0) {
+            while ((data = inputStream.read()) > 0) {
                 if (filter.test((char) data)) {
                     stringBuilder.append((char) data);
                 }
