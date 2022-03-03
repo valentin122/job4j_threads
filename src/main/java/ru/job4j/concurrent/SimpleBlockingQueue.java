@@ -20,11 +20,7 @@ public class SimpleBlockingQueue<T> {
 
     public synchronized void offer(T value) throws InterruptedException {
         while (queue.size() >= limit) {
-            try {
-                monitor.wait();
-            } catch (InterruptedException e) {
-                throw new InterruptedException(e.getMessage());
-            }
+            monitor.wait();
         }
         queue.add(value);
         monitor.notifyAll();
@@ -33,11 +29,7 @@ public class SimpleBlockingQueue<T> {
     public synchronized T poll() throws InterruptedException {
         T element;
         while (queue.isEmpty()) {
-            try {
-                monitor.wait();
-            } catch (InterruptedException e) {
-                throw new InterruptedException(e.getMessage());
-            }
+            monitor.wait();
         }
         element = queue.poll();
         monitor.notifyAll();
