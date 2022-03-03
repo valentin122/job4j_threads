@@ -18,25 +18,25 @@ public class SimpleBlockingQueue<T> {
     @GuardedBy("this")
     private Queue<T> queue = new LinkedList<>();
 
-    public synchronized void offer(T value) {
+    public synchronized void offer(T value) throws InterruptedException {
         while (queue.size() >= limit) {
             try {
                 monitor.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } finally {
+
             }
         }
         queue.add(value);
         monitor.notifyAll();
     }
 
-    public synchronized T poll() {
+    public synchronized T poll() throws InterruptedException {
         T element;
         while (queue.isEmpty()) {
             try {
                 monitor.wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } finally {
+
             }
         }
         element = queue.poll();
