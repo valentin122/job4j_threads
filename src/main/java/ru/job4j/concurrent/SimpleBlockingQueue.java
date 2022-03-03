@@ -22,8 +22,8 @@ public class SimpleBlockingQueue<T> {
         while (queue.size() >= limit) {
             try {
                 monitor.wait();
-            } finally {
-
+            } catch (InterruptedException e) {
+                throw new InterruptedException(e.getMessage());
             }
         }
         queue.add(value);
@@ -35,8 +35,8 @@ public class SimpleBlockingQueue<T> {
         while (queue.isEmpty()) {
             try {
                 monitor.wait();
-            } finally {
-
+            } catch (InterruptedException e) {
+                throw new InterruptedException(e.getMessage());
             }
         }
         element = queue.poll();
