@@ -33,7 +33,7 @@ public class SimpleBlockingQueueTest {
                         try {
                             buffer.add(queue.poll());
                         } catch (InterruptedException e) {
-                            //e.printStackTrace();
+                            e.printStackTrace();
                             Thread.currentThread().interrupt();
                         }
                     }
@@ -70,7 +70,7 @@ public class SimpleBlockingQueueTest {
                         try {
                             buffer.add(queue.poll());
                         } catch (InterruptedException e) {
-                            //e.printStackTrace();
+                            e.printStackTrace();
                             Thread.currentThread().interrupt();
                         }
                     }
