@@ -28,7 +28,6 @@ public class ParallelIndexSearch<T> extends RecursiveTask<Integer> {
 
         leftSort.fork();
         rightSort.fork();
-        // объединяем полученные результаты
         int left = leftSort.join();
         int right = rightSort.join();
         return Math.max(left, right);
