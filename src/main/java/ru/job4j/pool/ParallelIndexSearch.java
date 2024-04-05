@@ -35,7 +35,7 @@ public class ParallelIndexSearch<T> extends RecursiveTask<Integer> {
 
     private int simpleFind() {
         int result = -1;
-        for (int i = 0; i < array.length; i++) {
+        for (int i = from; i < to; i++) {
             if (array[i].equals(searchObj)) {
                 result = i;
                 break;
